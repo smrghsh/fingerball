@@ -47,7 +47,7 @@ const HandPoints = ({ webcamRef }) => {
           positions.push(coordFlipped);
         });
       });
-      console.log(positions);
+      // console.log(positions);
       setBufferArray(new Float32Array(positions));
     }
   }, [handPosition]);
