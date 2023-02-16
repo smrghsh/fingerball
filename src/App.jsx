@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { RigidBody, Physics, CuboidCollider } from '@react-three/rapier'
@@ -7,19 +7,25 @@ import HandPoints from "./components/Handpoints";
 
 const App = () => {
   const webcamRef = useRef();
+  const [avatarPosition, setAvatarPosition] = useState([3, 0, 3]); // state variable for avatarPosition
+
+  const handleHandPositionUpdate = (r) => {
+    setAvatarPosition(r);
+  };
 
   return (
     <div className="App">
       <div className="Webcam" style={{ position: "fixed", left: 0, top: 0 }}>
         <Webcam ref={webcamRef} mirrored />
       </div>
+      
 
       <Canvas>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
 
-        <HandPoints webcamRef={webcamRef} />
+        <HandPoints webcamRef={webcamRef} onHandPositionUpdate={handleHandPositionUpdate}/>
         <Physics>
           <RigidBody type="fixed"  restitution={1}  position={[0, - 1.25,0]  }>
             <mesh receiveShadow>
@@ -43,9 +49,10 @@ const App = () => {
           </RigidBody>
 
           <RigidBody
-              position={ [ 0, - 0.8, 0 ] }
+              position={ avatarPosition }
               friction={ 0 }
               type="kinematicPosition"
+              restitution={1}
           >
             <mesh castShadow scale={ [ 0.4, 2, 0.4 ] }>
                 <boxGeometry />

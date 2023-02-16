@@ -2,7 +2,7 @@ import { useRef, useEffect, useMemo, useState } from "react";
 import ml5 from "ml5";
 import { throttle } from "lodash";
 
-const HandPoints = ({ webcamRef }) => {
+const HandPoints = ({ webcamRef, onHandPositionUpdate }) => {
   const [handPosition, setHandPosition] = useState(false);
   const [bufferArray, setBufferArray] = useState([]);
 
@@ -19,7 +19,6 @@ const HandPoints = ({ webcamRef }) => {
       }, 100),
     []
   );
-
   useEffect(() => {
     // Set video size once
     webcamRef.current.video.width = vidSize.width;
@@ -49,6 +48,7 @@ const HandPoints = ({ webcamRef }) => {
       });
       // console.log(positions);
       setBufferArray(new Float32Array(positions));
+      onHandPositionUpdate([positions[0], positions[1], positions[2] - 1.5])
     }
   }, [handPosition]);
 
