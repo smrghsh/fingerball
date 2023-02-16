@@ -43,7 +43,7 @@ const HandPoints = ({ webcamRef }) => {
       const positions = [];
       handPosition.landmarks.map((mark) => {
         mark.map((coord) => {
-          const coordFlipped = ((coord / 100) * -1) + 2; // the "2" should be dynamic to screen size.
+          const coordFlipped = ((coord / 100) * -1) + 2; // TODO : the "2" should be dynamic to screen size.
           positions.push(coordFlipped);
         });
       });
